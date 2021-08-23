@@ -5,11 +5,9 @@ import App from './App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { bindActionCreators } from '@reduxjs/toolkit';
-import { fetchEmployeesAsync } from './features/employees/employeesSlice';
+import * as database from './app/database';
 
-const actions = bindActionCreators({ fetchEmployeesAsync }, store.dispatch);
-actions.fetchEmployeesAsync();
+database.initCheck();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +17,10 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+window.addEventListener('unload', function(event) {
+  // database.close();
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
