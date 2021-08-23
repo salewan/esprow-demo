@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
 `
 const SiteWrapper = ({ children }) => {
 

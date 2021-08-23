@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "@reach/router";
 import styled from 'styled-components';
 
 const Ul = styled.ul`
@@ -30,13 +31,22 @@ const Li = styled.li`
   }
 `
 
+const NavLink = props => (
+  <Link
+    {...props}
+    getProps={({ isCurrent }) => {
+      return {
+        className: isCurrent ? "active" : ""
+      };
+    }}
+  />
+);
+
 const Heading = () => {
   return (
     <Ul>
-      <Li><a className="active" href="#home">Home</a></Li>
-      <Li><a href="#news">News</a></Li>
-      <Li><a href="#contact">Contact</a></Li>
-      <Li><a href="#about">About</a></Li>
+      <Li><NavLink to={'/'}>General Summary</NavLink></Li>
+      <Li><NavLink to={'employees'}>Employee table</NavLink></Li>
     </Ul>
   )
 }
