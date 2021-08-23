@@ -1,10 +1,54 @@
 import React from 'react';
+import SiteWrapper from './layout/SiteWrapper';
+import Heading from './layout/Heading';
 
 function App() {
   return (
-    <div>
-
-    </div>
+    <>
+      <Heading />
+      <SiteWrapper>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+        <p>Some text some text some text some text..</p>
+      </SiteWrapper>
+    </>
   );
 }
 
