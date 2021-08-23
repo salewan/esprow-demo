@@ -86,6 +86,14 @@ function getTotalUnproductiveTime(active) {
   return employees(active).reduce((acc, employee) => acc + employee.getUnproductiveTime(), 0);
 }
 
+function getMinCalendarDate(active) {
+  return Math.min(...(employees(active).map(employee => employee.getMinDate())))
+}
+
+function getMaxCalendarDate(active) {
+  return Math.max(...(employees(active).map(employee => employee.getMaxDate())))
+}
+
 export {
 
   initCheck,
@@ -93,5 +101,7 @@ export {
   getTotalEmployees,
   getTotalClockedInTime,
   getTotalProductiveTime,
-  getTotalUnproductiveTime
+  getTotalUnproductiveTime,
+  getMinCalendarDate,
+  getMaxCalendarDate
 }

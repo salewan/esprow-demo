@@ -25,4 +25,12 @@ export default class Employee {
   getUnproductiveTime() {
     return this.times.reduce((acc, timeFrame) => acc + timeFrame.unproductiveTime, 0);
   }
+
+  getMinDate() {
+    return Math.min( ...(this.times.map(time => time.clockedIn)) );
+  }
+
+  getMaxDate() {
+    return Math.max( ...(this.times.map(time => time.clockedOut)) );
+  }
 }

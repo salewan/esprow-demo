@@ -1,12 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchEmployees, fetchTotalSummary } from './employeesAPI';
+import { fetchEmployees, fetchTotalSummary, fetchAvailableDateRange } from './employeesAPI';
 
 const initialState = {
   value: 0,
   employees: undefined,
   status: 'idle',
   summary: undefined,
-  onlyActive: true
+  onlyActive: true,
+  minDate: undefined,
+  maxDate: undefined,
+  filter: undefined,
+  searchTerm: undefined
 };
 
 export const fetchEmployeesAsync = createAsyncThunk(
@@ -25,6 +29,14 @@ export const fetchTotalSummaryAsync = createAsyncThunk(
   }
 )
 
+export const fetchAvailableDateRangeAsync = createAsyncThunk(
+  'employees/fetchAvailableDateRange',
+  async (active) => {
+    const response = await fetchAvailableDateRange(active);
+    return response.data;
+  }
+)
+
 export const employeesSlice = createSlice({
   name: 'employees',
   initialState,
@@ -32,6 +44,18 @@ export const employeesSlice = createSlice({
   reducers: {
     setOnlyActive: (state, action) => {
       state.onlyActive = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.filter = { ...state.filter, ...action.payload };
+      if (!action.payload.endDate || !action.payload.startDate) {
+        state.filter.applied = false;
+      }
+    },
+    setFilterApplied: (state, action) => {
+      state.filter.applied = action.payload;
+    },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
     }
   },
 
@@ -51,10 +75,14 @@ export const employeesSlice = createSlice({
         state.status = 'idle';
         state.summary = action.payload;
       })
+      .addCase(fetchAvailableDateRangeAsync.fulfilled, (state, action) => {
+        state.minDate = action.payload.minDate;
+        state.maxDate = action.payload.maxDate;
+      })
   },
 });
 
-export const { setOnlyActive } = employeesSlice.actions;
+export const { setOnlyActive, setFilter, setFilterApplied, setSearchTerm } = employeesSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -66,6 +94,11 @@ export const selectSummary = (state) => state.employees.summary;
 export const selectStatus = (state) => state.employees.status;
 
 export const selectOnlyActive = (state) => state.employees.onlyActive;
+
+export const selectMinDate = (state) => state.employees.minDate;
+export const selectMaxDate = (state) => state.employees.maxDate;
+export const selectFilter = (state) => state.employees.filter;
+export const selectSearchTerm = (state) => state.employees.searchTerm;
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

@@ -20,3 +20,10 @@ export function fetchTotalSummary(active) {
     totalUnproductiveTime: database.getTotalUnproductiveTime(active)
   });
 }
+
+export function fetchAvailableDateRange(active) {
+  return fetch({
+    minDate: database.getMinCalendarDate(active),
+    maxDate: database.getMaxCalendarDate(active)
+  })
+}
