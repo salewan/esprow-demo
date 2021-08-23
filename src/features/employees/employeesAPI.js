@@ -8,8 +8,8 @@ function fetch(data) {
   );
 }
 
-export function fetchEmployees() {
-  return fetch({});
+export function fetchEmployees({ searchTerm, filter, onlyActive }) {
+  return fetch(database.getEmployees(onlyActive, searchTerm, filter?.startDate, filter?.endDate).map(employee => employee.toObj() ));
 }
 
 export function fetchTotalSummary(active) {
@@ -26,4 +26,9 @@ export function fetchAvailableDateRange(active) {
     minDate: database.getMinCalendarDate(active),
     maxDate: database.getMaxCalendarDate(active)
   })
+}
+
+export function updateEmployee(employee) {
+  database.updateEmployee(employee);
+  return fetch({ status: 'ok' })
 }

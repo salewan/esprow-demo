@@ -3,7 +3,7 @@ import Employee from '../model/Employee';
 
 let DB = undefined;
 const DB_NAME = 'EsprowDemoDb';
-const FAKE_RECORDS = 10;
+const FAKE_RECORDS = 100;
 
 const MUNUTE_MILLIS = 60000;
 const HOUR_MILLIS = 60 * MUNUTE_MILLIS;
@@ -94,6 +94,32 @@ function getMaxCalendarDate(active) {
   return Math.max(...(employees(active).map(employee => employee.getMaxDate())))
 }
 
+function getEmployees(active, name, start, end) {
+  return employees(active).filter(employee => {
+    let good = true;
+    if (name) {
+      good = employee.name.toLowerCase().includes(name.trim().toLowerCase());
+    }
+    if (good && start) {
+      good = employee.getMinDate() <= start;
+    }
+    if (good && end) {
+      good = employee.getMaxDate() >= end;
+    }
+    return good;
+  })
+}
+
+function updateEmployee(employee) {
+  DB = DB.map(e => {
+    if (e.id === employee.id) {
+      return Employee.of(employee);
+    } else {
+      return e;
+    }
+  })
+}
+
 export {
 
   initCheck,
@@ -103,5 +129,7 @@ export {
   getTotalProductiveTime,
   getTotalUnproductiveTime,
   getMinCalendarDate,
-  getMaxCalendarDate
+  getMaxCalendarDate,
+  getEmployees,
+  updateEmployee
 }

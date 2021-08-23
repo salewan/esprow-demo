@@ -13,7 +13,7 @@ const InputStyled = styled.input`
 `
 
 const DebouncedInput = ({ value, onChange }) => {
-  const [term, setTerm] = React.useState(value);
+  const [term, setTerm] = React.useState(value || '');
   const debouncedTerm = useDebounce(term, 500);
 
   React.useEffect(() => {

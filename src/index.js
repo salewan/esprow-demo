@@ -21,7 +21,7 @@ ReactDOM.render(
 );
 
 window.addEventListener('unload', function(event) {
-  // database.close();
+  database.close();
 });
 
 // If you want your app to work offline and load faster, you can change

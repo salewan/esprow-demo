@@ -26,11 +26,22 @@ export default class Employee {
     return this.times.reduce((acc, timeFrame) => acc + timeFrame.unproductiveTime, 0);
   }
 
+  getProductivityRatio() {
+    return this.getProductiveTime() / this.getUnproductiveTime();
+  }
+
   getMinDate() {
     return Math.min( ...(this.times.map(time => time.clockedIn)) );
   }
 
   getMaxDate() {
     return Math.max( ...(this.times.map(time => time.clockedOut)) );
+  }
+
+  toObj() {
+    return {
+      ...this,
+      times: this.times.map(time => time.toObj())
+    }
   }
 }

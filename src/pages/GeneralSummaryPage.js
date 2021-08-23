@@ -1,18 +1,16 @@
 import React from 'react';
 import Switcher from '../components/Switcher';
 import Card from '../components/Card';
-
-import { selectStatus, selectSummary, selectOnlyActive, toggleActiveInSummary, fetchTotalSummaryAsync } from '../features/employees/employeesSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { Duration } from 'luxon';
-import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import StatusHead from '../components/StatusHead';
-
-const Bold = styled.span`
-  font-weight: bold;
-`
-
-const Hour = ({ ts }) => <><Bold>{Duration.fromMillis(ts).toFormat("h")}</Bold>&nbsp;hours</>
+import Hour from '../components/Hour';
+import {
+  fetchTotalSummaryAsync,
+  selectOnlyActive,
+  selectStatus,
+  selectSummary,
+  toggleActiveInSummary
+} from '../features/employees/employeesSlice';
 
 const GeneralSummaryPage = () => {
   const dispatch = useDispatch();

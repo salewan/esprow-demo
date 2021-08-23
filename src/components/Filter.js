@@ -39,18 +39,20 @@ const Filter = ({ minDate, maxDate, startDate, endDate, onChange, onOk, applied 
     }
   }, [startDate, endDate]);
 
-  const onClear = () => onChange({
-    startDate: undefined,
-    endDate: undefined
-  });
+  const onClear = () => {
+    onChange({
+      startDate: undefined,
+      endDate: undefined
+    });
+    onOk();
+    onClose();
+  }
 
   const onOpen = () => setOpen(true);
   const onClose = () => setOpen(false);
 
   const onApplyFilter = () => {
-    if (selection.startDate && selection.endDate) {
-      onOk();
-    }
+    onOk();
     onClose();
   }
 

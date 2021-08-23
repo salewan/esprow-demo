@@ -16,4 +16,10 @@ export default class TimeFrame {
   getLength() {
     return this.clockedOut - this.clockedIn;
   }
+
+  toObj() {
+    return {
+      ...this
+    }
+  }
 }

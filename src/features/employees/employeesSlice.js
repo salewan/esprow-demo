@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchEmployees, fetchTotalSummary, fetchAvailableDateRange } from './employeesAPI';
+import { fetchEmployees, fetchTotalSummary, fetchAvailableDateRange, updateEmployee } from './employeesAPI';
 
 const initialState = {
-  value: 0,
   employees: undefined,
   status: 'idle',
   summary: undefined,
@@ -15,8 +14,8 @@ const initialState = {
 
 export const fetchEmployeesAsync = createAsyncThunk(
   'employees/fetchEmployees',
-  async () => {
-    const response = await fetchEmployees();
+  async (params) => {
+    const response = await fetchEmployees(params);
     return response.data;
   }
 )
@@ -33,6 +32,14 @@ export const fetchAvailableDateRangeAsync = createAsyncThunk(
   'employees/fetchAvailableDateRange',
   async (active) => {
     const response = await fetchAvailableDateRange(active);
+    return response.data;
+  }
+)
+
+export const updateEmployeeAsync = createAsyncThunk(
+  'employees/updateEmployee',
+  async (employee) => {
+    const response = await updateEmployee(employee);
     return response.data;
   }
 )
@@ -56,6 +63,9 @@ export const employeesSlice = createSlice({
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
+    },
+    toggleEmployee: (state, action) => {
+      state.employees[action.payload].active = !state.employees[action.payload].active;
     }
   },
 
@@ -79,39 +89,52 @@ export const employeesSlice = createSlice({
         state.minDate = action.payload.minDate;
         state.maxDate = action.payload.maxDate;
       })
+      .addCase(updateEmployeeAsync.fulfilled, (state, action) => {})
   },
 });
 
-export const { setOnlyActive, setFilter, setFilterApplied, setSearchTerm } = employeesSlice.actions;
-
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectCount = (state) => state.counter.value;
+export const { setOnlyActive, setFilter, setFilterApplied, setSearchTerm, toggleEmployee } = employeesSlice.actions;
 
 export const selectSummary = (state) => state.employees.summary;
-
 export const selectStatus = (state) => state.employees.status;
-
 export const selectOnlyActive = (state) => state.employees.onlyActive;
-
 export const selectMinDate = (state) => state.employees.minDate;
 export const selectMaxDate = (state) => state.employees.maxDate;
 export const selectFilter = (state) => state.employees.filter;
 export const selectSearchTerm = (state) => state.employees.searchTerm;
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-export const incrementIfOdd = (amount) => (dispatch, getState) => {
-  const currentValue = selectCount(getState());
-  if (currentValue % 2 === 1) {
-    // dispatch(incrementByAmount(amount));
-  }
-};
+export const selectEmployees = (state) => state.employees.employees;
 
 export const toggleActiveInSummary = (checked) => (dispatch) => {
   dispatch(setOnlyActive(checked));
+}
 
+export const updateSearchTerm = (searchTerm) => (dispatch, getState) => {
+  dispatch(setSearchTerm(searchTerm));
+  const filter = selectFilter(getState());
+  const onlyActive = selectOnlyActive(getState());
+  dispatch(fetchEmployeesAsync({ searchTerm, filter, onlyActive } ));
+}
+
+export const applyFilter = (apply) => (dispatch, getState) => {
+  const filter = selectFilter(getState());
+  const searchTerm = selectSearchTerm(getState());
+  const onlyActive = selectOnlyActive(getState());
+  const applied = !!(apply && filter?.startDate && filter?.endDate);
+  dispatch(setFilterApplied(applied))
+  dispatch(fetchEmployeesAsync({ searchTerm, filter, onlyActive } ));
+}
+
+export const toggleEmployeeActive = (employeeId, index) => (dispatch, getState) => {
+  dispatch(toggleEmployee(index));
+  const e = getState().employees.employees[index];
+  dispatch(updateEmployeeAsync(e));
+}
+
+export const toggleActiveInTable = (checked) => (dispatch, getState) => {
+  dispatch(setOnlyActive(checked));
+  const filter = selectFilter(getState());
+  const searchTerm = selectSearchTerm(getState())
+  dispatch(fetchEmployeesAsync({ searchTerm, filter, onlyActive: checked } ));
 }
 
 export default employeesSlice.reducer;
